@@ -6,9 +6,11 @@ const toggle = document.querySelector(".nav-toggle");
 const nav = document.querySelector(".nav");
 const closeBtn = document.querySelector(".nav-close");
 if (toggle && nav) {
-  toggle.addEventListener("click", () => nav.classList.add("open"));
-  closeBtn && closeBtn.addEventListener("click", () => nav.classList.remove("open"));
-  nav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => nav.classList.remove("open")));
+  const setOpen = o => { nav.classList.toggle("open", o); document.body.classList.toggle("menu-open", o); toggle.setAttribute("aria-expanded", o); };
+  toggle.addEventListener("click", () => setOpen(true));
+  document.addEventListener("keydown", e => { if (e.key === "Escape") setOpen(false); });
+  closeBtn && closeBtn.addEventListener("click", () => setOpen(false));
+  nav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => setOpen(false)));
 }
 
 // scroll reveal (respects reduced motion)
